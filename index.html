@@ -90,36 +90,17 @@
             </div>
 
             <div class="info-card" style="margin-bottom: 15px;">
-                <h3>🌸 Tokyo Weather</h3>
-                <div style="font-size: 0.85em; color: #ff6b9d; margin-bottom: 10px;">
-                    Check: weather.com/tokyo
-                </div>
+                <h3>🌸 Live Tokyo Weather</h3>
                 <div class="weather-current">
-                    <span id="weatherTemp">24°C</span> ☀️
+                    <span id="weatherTemp">--°C</span>
+                    <span id="weatherIcon" style="font-size: 1.2em;">-</span>
+                    <div id="weatherDescription" style="font-size: 0.6em; color: #b8b8d0; text-transform: capitalize;">Loading...</div>
                 </div>
-                <div class="weather-details">
-                    <div class="weather-item">
-                        <strong>Sept</strong><br>20-26°C
-                    </div>
-                    <div class="weather-item">
-                        <strong>Humidity</strong><br>65-75%
-                    </div>
-                    <div class="weather-item">
-                        <strong>Typhoon Season</strong><br>Aug-Oct
-                    </div>
-                    <div class="weather-item">
-                        <strong>Rain</strong><br>150mm avg
-                    </div>
+                <div class="weather-forecast" id="weatherForecast">
+                    <!-- 5-day forecast will be injected here by script.js -->
                 </div>
-                <div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 157, 0.1); border-radius: 8px;">
-                    <div style="font-size: 0.85em; color: #ff6b9d;">
-                        ⚠️ <strong>Sept Warnings:</strong>
-                    </div>
-                    <div style="font-size: 0.8em; color: #e0e0e0; margin-top: 5px;">
-                        • Typhoon possible (check 3 days before)<br>
-                        • Sudden heavy rain (always carry umbrella)<br>
-                        • High humidity (hydrate constantly)
-                    </div>
+                <div id="weather-api-message" style="font-size: 0.75em; color: #feca57; text-align: center; margin-top: 10px; display: none;">
+                    Add OpenWeatherMap API key to activate live weather.
                 </div>
             </div>
 

@@ -1,3 +1,19 @@
+// --- CONFIGURATION ---
+// Instructions:
+// 1. Get your free API key from https://openweathermap.org/
+// 2. Paste your key into the 'openWeatherMapApiKey' variable.
+const openWeatherMapApiKey = ""; // <-- PASTE YOUR KEY HERE
+
+// Instructions:
+// 1. Get your free API key from the Google Cloud Console: https://console.cloud.google.com/
+// 2. Create a "Custom Search Engine" and get its ID: https://programmablesearchengine.google.com/
+// 3. Paste your key and ID into the variables below.
+const googleCustomSearchApiKey = ""; // <-- PASTE YOUR GOOGLE API KEY HERE
+const googleCustomSearchEngineId = ""; // <-- PASTE YOUR CUSTOM SEARCH ENGINE ID HERE
+
+// --- END CONFIGURATION ---
+
+
 // Dashboard v3.5 Features:
 // - Enhanced Places to Visit with drag & drop (5 pre-loaded destinations)
 // - Image upload/AI generation placeholders
@@ -271,6 +287,7 @@ function addNewPlace() {
     newPlace.addEventListener('drop', handleDrop);
     newPlace.addEventListener('dragenter', handleDragEnter);
     newPlace.addEventListener('dragleave', handleDragLeave);
+    addTitleEditListener(newPlace); // Add listener for image fetching on title edit
 
     // Focus on the title for immediate editing
     const titleElement = newPlace.querySelector('.place-title');
@@ -333,8 +350,127 @@ function generateAI(element) {
     // In a real implementation, this would call an AI image generation API
 }
 
+// --- PLACES ---
+
+async function fetchPlaceImage(query, imgElement) {
+    if (!googleCustomSearchApiKey || !googleCustomSearchEngineId) {
+        console.warn("Google Custom Search API key or Engine ID is missing.");
+        return;
+    }
+
+    const url = `https://www.googleapis.com/customsearch/v1?key=${googleCustomSearchApiKey}&cx=${googleCustomSearchEngineId}&q=${encodeURIComponent(query)}&searchType=image&num=1&imgSize=medium`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Google Search API request failed: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+            imgElement.src = data.items[0].link;
+        } else {
+            console.warn(`No image found for query: ${query}`);
+        }
+    } catch (error) {
+        console.error("Error fetching place image:", error);
+    }
+}
+
+
+// --- WEATHER ---
+
+function getWeatherIcon(iconCode) {
+    const iconMap = {
+        "01d": "☀️", "01n": "🌙",
+        "02d": "⛅️", "02n": "☁️",
+        "03d": "☁️", "03n": "☁️",
+        "04d": "☁️", "04n": "☁️",
+        "09d": "🌧️", "09n": "🌧️",
+        "10d": "🌦️", "10n": "🌧️",
+        "11d": "⛈️", "11n": "⛈️",
+        "13d": "❄️", "13n": "❄️",
+        "50d": "🌫️", "50n": "🌫️",
+    };
+    return iconMap[iconCode] || "-";
+}
+
+function displayWeather(data) {
+    // Update current weather
+    const currentWeather = data.list[0];
+    document.getElementById('weatherTemp').textContent = `${Math.round(currentWeather.main.temp)}°C`;
+    document.getElementById('weatherIcon').textContent = getWeatherIcon(currentWeather.weather[0].icon);
+    document.getElementById('weatherDescription').textContent = currentWeather.weather[0].description;
+
+    // Update 5-day forecast
+    const forecastContainer = document.getElementById('weatherForecast');
+    forecastContainer.innerHTML = ''; // Clear previous forecast
+
+    // Filter to get one forecast per day (around midday)
+    const dailyForecasts = data.list.filter(item => item.dt_txt.includes("12:00:00"));
+
+    // If no midday forecast yet for today, add the current one as today's forecast
+    if (!dailyForecasts.some(item => new Date(item.dt * 1000).getDate() === new Date().getDate())) {
+        dailyForecasts.unshift(currentWeather);
+    }
+
+    // Display the next 5 days
+    for (let i = 0; i < 5 && i < dailyForecasts.length; i++) {
+        const dayData = dailyForecasts[i];
+        const day = new Date(dayData.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+
+        const forecastItem = document.createElement('div');
+        forecastItem.className = 'forecast-item';
+        forecastItem.innerHTML = `
+            <div class="forecast-day">${day}</div>
+            <div class="forecast-icon">${getWeatherIcon(dayData.weather[0].icon)}</div>
+            <div class="forecast-temp">${Math.round(dayData.main.temp)}°C</div>
+        `;
+        forecastContainer.appendChild(forecastItem);
+    }
+}
+
+
+async function fetchWeather() {
+    if (!openWeatherMapApiKey) {
+        document.getElementById('weather-api-message').style.display = 'block';
+        console.warn("OpenWeatherMap API key is missing.");
+        return;
+    }
+
+    const lat = 35.6895;
+    const lon = 139.6917;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${openWeatherMapApiKey}&units=metric`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Weather API request failed: ${response.status}`);
+        }
+        const data = await response.json();
+        displayWeather(data);
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        document.getElementById('weatherDescription').textContent = "Weather data unavailable.";
+    }
+}
+
+
+function addTitleEditListener(placeCard) {
+    const titleElement = placeCard.querySelector('.place-title');
+    const imgElement = placeCard.querySelector('.place-image');
+
+    titleElement.addEventListener('blur', () => {
+        const newQuery = titleElement.textContent.trim();
+        if (newQuery) {
+            fetchPlaceImage(`${newQuery}, Tokyo`, imgElement);
+        }
+    });
+}
+
 // Initial setup on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
+    fetchWeather();
+
     // Timed updates
     updateCountdown();
     updateTimeZones();
@@ -369,7 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     updateProgress();
 
-    // Drag and drop for places
+    // Drag and drop for places and AI image fetching
     document.querySelectorAll('.place-card').forEach(card => {
         card.addEventListener('dragstart', handleDragStart);
         card.addEventListener('dragend', handleDragEnd);
@@ -377,6 +513,16 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('drop', handleDrop);
         card.addEventListener('dragenter', handleDragEnter);
         card.addEventListener('dragleave', handleDragLeave);
+
+        // Add listener for title edits to fetch new image
+        addTitleEditListener(card);
+
+        // Fetch initial image
+        const title = card.querySelector('.place-title').textContent.trim();
+        const imgElement = card.querySelector('.place-image');
+        if (title) {
+            fetchPlaceImage(`${title}, Tokyo`, imgElement);
+        }
     });
 
     // Tag click handlers
