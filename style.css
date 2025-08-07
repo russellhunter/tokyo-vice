@@ -412,6 +412,40 @@ body::before {
     text-align: center;
 }
 
+.weather-forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 8px;
+}
+
+.forecast-item {
+    text-align: center;
+    background: rgba(30, 30, 50, 0.5);
+    padding: 10px 5px;
+    border-radius: 10px;
+    flex: 1;
+    font-size: 0.8em;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.forecast-day {
+    font-weight: 600;
+    color: #ff6b9d;
+    margin-bottom: 5px;
+}
+
+.forecast-icon {
+    font-size: 1.8em;
+    margin: 5px 0;
+}
+
+.forecast-temp {
+    color: #feca57;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+}
+
 .day-section {
     background: rgba(30, 30, 50, 0.6);
     padding: 20px;
