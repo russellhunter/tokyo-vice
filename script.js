@@ -4,13 +4,6 @@
 // 2. Paste your key into the 'openWeatherMapApiKey' variable.
 const openWeatherMapApiKey = ""; // <-- PASTE YOUR KEY HERE
 
-// Instructions:
-// 1. Get your free API key from the Google Cloud Console: https://console.cloud.google.com/
-// 2. Create a "Custom Search Engine" and get its ID: https://programmablesearchengine.google.com/
-// 3. Paste your key and ID into the variables below.
-const googleCustomSearchApiKey = ""; // <-- PASTE YOUR GOOGLE API KEY HERE
-const googleCustomSearchEngineId = ""; // <-- PASTE YOUR CUSTOM SEARCH ENGINE ID HERE
-
 // --- END CONFIGURATION ---
 
 
@@ -287,7 +280,6 @@ function addNewPlace() {
     newPlace.addEventListener('drop', handleDrop);
     newPlace.addEventListener('dragenter', handleDragEnter);
     newPlace.addEventListener('dragleave', handleDragLeave);
-    addTitleEditListener(newPlace); // Add listener for image fetching on title edit
 
     // Focus on the title for immediate editing
     const titleElement = newPlace.querySelector('.place-title');
@@ -349,33 +341,6 @@ function generateAI(element) {
     alert("AI image generation would be triggered here");
     // In a real implementation, this would call an AI image generation API
 }
-
-// --- PLACES ---
-
-async function fetchPlaceImage(query, imgElement) {
-    if (!googleCustomSearchApiKey || !googleCustomSearchEngineId) {
-        console.warn("Google Custom Search API key or Engine ID is missing.");
-        return;
-    }
-
-    const url = `https://www.googleapis.com/customsearch/v1?key=${googleCustomSearchApiKey}&cx=${googleCustomSearchEngineId}&q=${encodeURIComponent(query)}&searchType=image&num=1&imgSize=medium`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Google Search API request failed: ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.items && data.items.length > 0) {
-            imgElement.src = data.items[0].link;
-        } else {
-            console.warn(`No image found for query: ${query}`);
-        }
-    } catch (error) {
-        console.error("Error fetching place image:", error);
-    }
-}
-
 
 // --- WEATHER ---
 
@@ -455,18 +420,6 @@ async function fetchWeather() {
 }
 
 
-function addTitleEditListener(placeCard) {
-    const titleElement = placeCard.querySelector('.place-title');
-    const imgElement = placeCard.querySelector('.place-image');
-
-    titleElement.addEventListener('blur', () => {
-        const newQuery = titleElement.textContent.trim();
-        if (newQuery) {
-            fetchPlaceImage(`${newQuery}, Tokyo`, imgElement);
-        }
-    });
-}
-
 // Initial setup on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
     fetchWeather();
@@ -505,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     updateProgress();
 
-    // Drag and drop for places and AI image fetching
+    // Drag and drop for places
     document.querySelectorAll('.place-card').forEach(card => {
         card.addEventListener('dragstart', handleDragStart);
         card.addEventListener('dragend', handleDragEnd);
@@ -513,16 +466,6 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('drop', handleDrop);
         card.addEventListener('dragenter', handleDragEnter);
         card.addEventListener('dragleave', handleDragLeave);
-
-        // Add listener for title edits to fetch new image
-        addTitleEditListener(card);
-
-        // Fetch initial image
-        const title = card.querySelector('.place-title').textContent.trim();
-        const imgElement = card.querySelector('.place-image');
-        if (title) {
-            fetchPlaceImage(`${title}, Tokyo`, imgElement);
-        }
     });
 
     // Tag click handlers
@@ -534,26 +477,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Collapsible sections
     document.querySelectorAll('.collapsible-header').forEach(header => {
+        const container = header.closest('.section-container, .card, .day-section');
+
+        // Click event to toggle
         header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            if (content && content.classList.contains('collapsible-content')) {
-                content.classList.toggle('collapsed');
-            } else {
-                // Handle cases where content is nested inside another div
-                const parent = header.parentElement;
-                const contentWrapper = parent.querySelector('.collapsible-content');
-                if(contentWrapper) {
-                    contentWrapper.classList.toggle('collapsed');
-                }
+            if (container) {
+                container.classList.toggle('is-collapsed');
             }
         });
 
-        // Start all sections collapsed except the first one
-        if (header.parentElement.id !== 'pre-trip') {
-             const content = header.nextElementSibling;
-             if (content && content.classList.contains('collapsible-content')) {
-                content.classList.add('collapsed');
-            }
+        // Initially collapse all but the first main section
+        if (container && container.parentElement.id !== 'pre-trip' && container.classList.contains('section-container')) {
+            container.classList.add('is-collapsed');
         }
     });
 });
