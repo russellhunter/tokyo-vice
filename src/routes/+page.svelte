@@ -19,8 +19,6 @@
     <Section title="Pre-Trip Preparation" icon="✈️" startCollapsed={false}>
         <PreTrip />
     </Section>
-
-    <!-- The other sections will be added here as new components are built -->
 </div>
 
 <style>
