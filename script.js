@@ -531,4 +531,29 @@ document.addEventListener('DOMContentLoaded', function() {
             tag.onclick = function() { toggleTag(this); };
         }
     });
+
+    // Collapsible sections
+    document.querySelectorAll('.collapsible-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            if (content && content.classList.contains('collapsible-content')) {
+                content.classList.toggle('collapsed');
+            } else {
+                // Handle cases where content is nested inside another div
+                const parent = header.parentElement;
+                const contentWrapper = parent.querySelector('.collapsible-content');
+                if(contentWrapper) {
+                    contentWrapper.classList.toggle('collapsed');
+                }
+            }
+        });
+
+        // Start all sections collapsed except the first one
+        if (header.parentElement.id !== 'pre-trip') {
+             const content = header.nextElementSibling;
+             if (content && content.classList.contains('collapsible-content')) {
+                content.classList.add('collapsed');
+            }
+        }
+    });
 });
