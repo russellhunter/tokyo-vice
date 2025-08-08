@@ -864,17 +864,19 @@ body::before {
     color: #48dbfb;
 }
 
-.collapsible-content.collapsed + .collapsible-header .toggle-icon {
+/* Rotate icon when the container has the 'is-collapsed' class */
+.is-collapsed .toggle-icon {
     transform: rotate(-90deg);
 }
 
 .collapsible-content {
     overflow: hidden;
-    transition: max-height 0.4s ease-in-out, padding-top 0.4s ease, margin-bottom 0.4s ease;
+    transition: max-height 0.4s ease-in-out, padding-top 0.4s ease, margin-bottom 0.4s ease, border-width 0.4s ease;
     max-height: 8000px; /* Large enough for any content */
 }
 
-.collapsible-content.collapsed {
+/* Hide content when the container has the 'is-collapsed' class */
+.is-collapsed > .collapsible-content {
     max-height: 0;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -889,4 +891,35 @@ body::before {
 
 .card.collapsible-content {
      padding: 25px; /* Keep original padding */
+}
+
+/* --- Expenses Table --- */
+.expenses-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #e0e0e0;
+    font-size: 0.95em;
+}
+
+.expenses-table th, .expenses-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.expenses-table th {
+    color: #ff6b9d;
+    font-weight: 500;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.expenses-table tbody tr:hover {
+    background: rgba(40, 40, 60, 0.5);
+}
+
+.expenses-table td:nth-child(3), .expenses-table td:nth-child(4) {
+    font-family: 'DM Mono', monospace;
+    color: #feca57;
 }
