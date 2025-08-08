@@ -78,6 +78,13 @@ body::before {
     50% { opacity: 1; }
 }
 
+.info-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
 .info-card {
     background: rgba(25, 25, 40, 0.8);
     backdrop-filter: blur(10px);
@@ -118,6 +125,12 @@ body::before {
 
 .section-icon {
     font-size: 2em;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 .card {
@@ -129,15 +142,24 @@ body::before {
     margin-bottom: 20px;
 }
 
+.card h2, .card h3 {
+    color: #ff6b9d;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
 .card h2 {
     font-size: 1.4em;
-    color: #ff6b9d;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .countdown-timer {
     font-family: 'DM Mono', monospace;
     font-size: 2em;
     color: #48dbfb;
+    font-weight: 400;
 }
 
 .task-list {
@@ -150,10 +172,17 @@ body::before {
     margin: 10px 0;
     background: rgba(30, 30, 50, 0.6);
     border-radius: 12px;
+    display: flex;
+    align-items: center;
 }
 
-.priority-high { border-left: 3px solid #ff6b9d; }
-.priority-medium { border-left: 3px solid #feca57; }
+.priority-high {
+    border-left: 3px solid #ff6b9d;
+}
+
+.priority-medium {
+    border-left: 3px solid #feca57;
+}
 
 .tips-section {
     background: rgba(30, 30, 50, 0.6);
@@ -161,24 +190,59 @@ body::before {
     border-radius: 12px;
     margin: 10px 0;
     color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.tips-section h3 { color: #48dbfb; }
+.tips-section h3 {
+    color: #48dbfb;
+    margin-bottom: 10px;
+}
+
+.tips-section ul {
+    margin-left: 20px;
+    line-height: 1.8;
+}
+
+.tips-section li {
+    margin: 8px 0;
+}
 
 .exchange-rates {
     display: flex;
     justify-content: space-around;
+    margin: 15px 0;
 }
 
-.rate-item { text-align: center; }
-.rate-value { font-family: 'DM Mono', monospace; font-size: 1.8em; color: #48dbfb; }
-.rate-label { font-size: 0.8em; color: #b8b8d0; }
+.rate-item {
+    text-align: center;
+    color: #e0e0e0;
+}
 
-.converter-input { display: flex; gap: 10px; align-items: center; justify-content: center; }
+.rate-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.8em;
+    font-weight: 500;
+    color: #48dbfb;
+}
+
+.rate-label {
+    font-size: 0.8em;
+    color: #b8b8d0;
+}
+
+.converter-input {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
 .converter-input input, .converter-input select {
     padding: 10px;
     border: 2px solid rgba(255, 107, 157, 0.3);
     border-radius: 10px;
+    font-size: 1em;
     background: rgba(30, 30, 50, 0.6);
     color: #f0f0f0;
 }
@@ -191,20 +255,108 @@ body::before {
     text-align: center;
     color: #feca57;
     font-family: 'DM Mono', monospace;
+    font-size: 1.1em;
 }
 
-.weather-current { font-size: 2.5em; color: #48dbfb; }
-.weather-forecast { display: flex; justify-content: space-between; margin-top: 20px; gap: 8px; }
-.forecast-item { text-align: center; background: rgba(30, 30, 50, 0.5); padding: 10px 5px; border-radius: 10px; flex: 1; font-size: 0.8em; }
-.forecast-day { font-weight: 600; color: #ff6b9d; }
-.forecast-icon { font-size: 1.8em; }
-.forecast-temp { color: #feca57; }
+.weather-current {
+    font-size: 2.5em;
+    margin: 10px 0;
+    color: #48dbfb;
+}
 
-.phone-link { color: #48dbfb; text-decoration: none; }
-.phone-link:hover { color: #feca57; text-decoration: underline; }
+.weather-forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 8px;
+}
+
+.forecast-item {
+    text-align: center;
+    background: rgba(30, 30, 50, 0.5);
+    padding: 10px 5px;
+    border-radius: 10px;
+    flex: 1;
+    font-size: 0.8em;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.forecast-day {
+    font-weight: 600;
+    color: #ff6b9d;
+    margin-bottom: 5px;
+}
+
+.forecast-icon {
+    font-size: 1.8em;
+    margin: 5px 0;
+}
+
+.forecast-temp {
+    color: #feca57;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+}
+
+.day-section {
+    background: rgba(30, 30, 50, 0.6);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+    border-left: 3px solid #ff6b9d;
+    color: #e0e0e0;
+}
+
+.day-section h3 {
+    color: #ff6b9d;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 107, 157, 0.3);
+}
+
+.day-section ul {
+    margin-left: 20px;
+    line-height: 2;
+}
+
+.day-section li {
+    margin: 10px 0;
+}
+
+.sakura-icon {
+    display: inline-block;
+    animation: sakuraFloat 4s ease-in-out infinite;
+}
+
+@keyframes sakuraFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-5px) rotate(5deg); }
+    75% { transform: translateY(5px) rotate(-5deg); }
+}
+
+.lofi-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(255, 107, 157, 0.2);
+    border-radius: 20px;
+    font-size: 0.8em;
+    color: #ff6b9d;
+    margin-left: 10px;
+}
+
+.phone-link {
+    color: #48dbfb;
+    text-decoration: none;
+}
+
+.phone-link:hover {
+    color: #feca57;
+    text-decoration: underline;
+}
 
 .place-card {
     background: rgba(25, 25, 40, 0.8);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     padding: 20px;
@@ -217,6 +369,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .toggle-icon {
@@ -249,18 +402,28 @@ body::before {
     width: 100%;
     border-collapse: collapse;
     color: #e0e0e0;
+    font-size: 0.95em;
 }
+
 .expenses-table th, .expenses-table td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .expenses-table th {
     color: #ff6b9d;
+    font-weight: 500;
+    font-size: 0.9em;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
+
+.expenses-table tbody tr:hover {
+    background: rgba(40, 40, 60, 0.5);
+}
+
 .expenses-table td:nth-child(3), .expenses-table td:nth-child(4) {
     font-family: 'DM Mono', monospace;
     color: #feca57;
 }
-</style>
