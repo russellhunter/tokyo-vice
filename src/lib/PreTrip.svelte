@@ -15,13 +15,11 @@
         </h2>
         {#if !preFlightCollapsed}
         <div class="collapsible-content" transition:slide>
+            <!-- Content for pre-flight checklist -->
             <ul class="task-list">
                 <li class="task-item priority-high">Book first week hotel (24th-29th Sept)</li>
                 <li class="task-item priority-high">Book final weekend hotels (4th-6th Oct)</li>
                 <li class="task-item priority-high">Confirm Nikitias Airport Travel</li>
-                 <li class="task-item priority-high">Register Visit Japan Web</li>
-                <li class="task-item priority-medium">Book Sumo tickets (27th Sept)</li>
-                <li class="task-item priority-medium">Book TeamLab Borderless</li>
             </ul>
         </div>
         {/if}
@@ -35,13 +33,11 @@
         </h2>
         {#if !packDayCollapsed}
         <div class="collapsible-content" transition:slide>
+            <!-- Content for pack day -->
             <div class="tips-section">
                 <h3>Afternoon Tasks:</h3>
                 <ul>
                     <li>13:10 - Online check-in</li>
-                    <li>14:00 - Confirm taxi with Nikitias</li>
-                    <li>16:00 - Download offline content</li>
-                    <li>17:00 - Charge all devices</li>
                     <li>Print all documents (flights, hotels, etc.)</li>
                 </ul>
             </div>
@@ -57,6 +53,7 @@
         </h2>
         {#if !departureDayCollapsed}
         <div class="collapsible-content" transition:slide>
+            <!-- Content for departure day -->
             <div class="tips-section" style="background: rgba(255, 107, 157, 0.1);">
                 <h3>🚕 Nikitias Taxi Pickup:</h3>
                 <ul>
@@ -69,6 +66,9 @@
 </div>
 
 <style>
+    .dashboard {
+        /* Styles for the dashboard layout if any */
+    }
     .card {
         background: rgba(25, 25, 40, 0.8);
         backdrop-filter: blur(10px);
@@ -83,9 +83,7 @@
         justify-content: space-between;
         align-items: center;
         user-select: none;
-    }
-    .collapsible-header:not(:last-child) {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
     .toggle-icon {
         font-size: 1.2em;
@@ -113,9 +111,6 @@
     }
     .priority-high {
         border-left: 3px solid #ff6b9d;
-    }
-    .priority-medium {
-        border-left: 3px solid #feca57;
     }
     .tips-section {
         background: rgba(30, 30, 50, 0.6);
