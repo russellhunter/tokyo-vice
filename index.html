@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo 1% Trip Project HQ - v3.5</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="padding-top: 20px;">
+            <h1>🌸 Tokyo 1% Project HQ <span class="sakura-icon">🗾</span></h1>
+            <div class="tagline">"You didn't just go to Tokyo. You felt it in your bones."</div>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0; font-size: 0.95em;">
+            <a href="#pre-trip" onclick="scrollToSection('pre-trip'); return false;" style="color: #48dbfb; text-decoration: underline; margin: 0 10px;">Pre-Trip</a>
+            <a href="#places" onclick="scrollToSection('places'); return false;" style="color: #48dbfb; text-decoration: underline; margin: 0 10px;">Places</a>
+            <a href="#ideas" onclick="scrollToSection('ideas'); return false;" style="color: #48dbfb; text-decoration: underline; margin: 0 10px;">Week 1</a>
+            <a href="#week2" onclick="scrollToSection('week2'); return false;" style="color: #48dbfb; text-decoration: underline; margin: 0 10px;">Services</a>
+            <a href="#final-days" onclick="scrollToSection('final-days'); return false;" style="color: #48dbfb; text-decoration: underline; margin: 0 10px;">Final Days</a>
+        </div>
+
+        <div class="info-card" style="margin: 20px auto; max-width: 500px;">
+            <h3>⏱️ Departure Countdown</h3>
+            <div class="countdown-timer" id="countdown" style="font-size: 1.8em;">Calculating...</div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <div style="max-width: 500px; margin: 20px auto;">
+            <div class="info-card" style="margin-bottom: 15px;">
+                <h3>💴 Currency Rates</h3>
+                <div class="exchange-rates">
+                    <div class="rate-item">
+                        <div class="rate-value" id="gbpRate">¥172</div>
+                        <div class="rate-label">per £1</div>
+                    </div>
+                    <div class="rate-item">
+                        <div class="rate-value" id="usdRate">¥154</div>
+                        <div class="rate-label">per $1</div>
+                    </div>
+                </div>
+                <div style="margin: 15px 0; padding: 10px; background: rgba(30, 30, 50, 0.6); border-radius: 10px;">
+                    <div style="color: #feca57; font-family: 'DM Mono', monospace; font-size: 0.95em; line-height: 1.6;">
+                        £1 = ¥172<br>
+                        £10 = ¥1,720<br>
+                        £100 = ¥17,200
+                    </div>
+                </div>
+                <div class="converter-input">
+                    <input type="number" id="amountInput" placeholder="1000" value="1000">
+                    <select id="currencySelect">
+                        <option value="JPY">¥ YEN</option>
+                        <option value="GBP">£ GBP</option>
+                        <option value="USD">$ USD</option>
+                    </select>
+                </div>
+                <div class="converted-amounts" id="conversionResult">
+                    ¥1000 = £5.80 / $6.50
+                </div>
+            </div>
+
+            <div class="info-card" style="margin-bottom: 15px;">
+                <h3>🌸 Live Tokyo Weather</h3>
+                <div class="weather-current">
+                    <span id="weatherTemp">--°C</span>
+                    <span id="weatherIcon" style="font-size: 1.2em;">-</span>
+                    <div id="weatherDescription" style="font-size: 0.6em; color: #b8b8d0; text-transform: capitalize;">Loading...</div>
+                </div>
+                <div class="weather-forecast" id="weatherForecast">
+                </div>
+                <div id="weather-api-message" style="font-size: 0.75em; color: #feca57; text-align: center; margin-top: 10px; display: none;">
+                    Add OpenWeatherMap API key to activate live weather.
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>🌏 Time Zones</h3>
+                <div style="text-align: center; margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <div style="color: #ff6b9d; font-size: 0.9em;">LONDON</div>
+                        <div class="countdown-timer" id="londonTime" style="font-size: 1.5em;">--:--</div>
+                    </div>
+                    <div>
+                        <div style="color: #48dbfb; font-size: 0.9em;">TOKYO</div>
+                        <div class="countdown-timer" id="tokyoTime" style="font-size: 1.5em; color: #feca57;">--:--</div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85em; color: #b8b8d0;">
+                        Tokyo is <span id="timeDiff">8</span> hours ahead
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container is-collapsed" id="pre-trip">
+            <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="section-icon">✈️</span>
+                    <h2>Pre-Trip Preparation</h2>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="dashboard">
+                    <div class="card">
+                        <h2>📋 Pre-Flight Checklist</h2>
+                    </div>
+                    <div class="card is-collapsed">
+                        <h2 class="collapsible-header">
+                            <span>📦 Mon 22nd Sept - Pack Day</span>
+                            <span class="toggle-icon">▼</span>
+                        </h2>
+                        <div class="collapsible-content">
+                            <span class="lofi-badge">AFK Day</span>
+                        </div>
+                    </div>
+                    <div class="card is-collapsed">
+                        <h2 class="collapsible-header">
+                            <span>✈️ Tue 23rd Sept - Departure</span>
+                            <span class="toggle-icon">▼</span>
+                        </h2>
+                        <div class="collapsible-content">
+                            <div class="tips-section" style="background: rgba(255, 107, 157, 0.1);">
+                                <h3>🚕 Nikitias Taxi Pickup:</h3>
+                                <ul>
+                                    <li><strong>07:30</strong> - Pickup time</li>
+                                    <li><a href="https://www.google.com/maps/search/?api=1&query=58+Exford+Avenue%2C+SS0+0EF" target="_blank" class="phone-link">58 Exford Avenue, SS0 0EF</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container is-collapsed" id="helpful">
+             <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="section-icon">💡</span>
+                    <h2>Essential Tokyo Survival Kit</h2>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                 <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="card">
+                        <h2>🚨 Emergency Information</h2>
+                        <div>
+                            <strong>ONE@Tokyo (29th Sept - 4th Oct):</strong><br>
+                            <a href="https://www.google.com/maps/search/?api=1&query=1+Chome-19-3+Oshiage%2C+Sumida+City%2C+Tokyo+131-0045" target="_blank" class="phone-link">1 Chome-19-3 Oshiage, Sumida City, Tokyo 131-0045</a>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <div class="section-container is-collapsed" id="ideas">
+             <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;"><span class="section-icon">💭</span><h2>Week 1 - Tokyo Vice</h2></div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                 <div class="dashboard">
+                    <div class="card wide-card">
+                        <div class="day-section is-collapsed">
+                            <h3 class="collapsible-header">
+                                <span>Wed 24th Sept - Arrival Day</span>
+                                <span class="toggle-icon">▼</span>
+                            </h3>
+                            <div class="collapsible-content"></div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <div class="section-container is-collapsed" id="places">
+             <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;"><span class="section-icon">📍</span><h2>Places to Visit</h2></div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div style="max-width: 1000px; margin: 0 auto;"><div id="placesList"></div></div>
+            </div>
+        </div>
+
+        <div class="section-container is-collapsed" id="week2">
+             <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;"><span class="section-icon">💼</span><h2>Week 2: Services Meet-up</h2></div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="card is-collapsed">
+                        <h2 class="collapsible-header">
+                            <span>🏨 ONE@Tokyo Base Camp</span>
+                            <span class="toggle-icon">▼</span>
+                        </h2>
+                        <div class="collapsible-content">
+                             <div class="day-section is-collapsed">
+                                <h3 class="collapsible-header">
+                                    <span>Wed 1st Oct - Day 2</span>
+                                    <span class="toggle-icon">▼</span>
+                                </h3>
+                                <div class="collapsible-content">
+                                    <div class="tips-section" style="background: rgba(255, 107, 157, 0.1); border-left: 3px solid #ff6b9d;">
+                                        <h3 style="color: #ff6b9d;">🥩 Team Dinner: Yoroniku (よろにく)</h3>
+                                        <ul>
+                                            <li><strong>Address:</strong> <a href="https://www.google.com/maps/search/?api=1&query=6+Chome-6-22+Minamiaoyama%2C+Minato+City%2C+Tokyo" target="_blank" class="phone-link">6 Chome-6-22 Minamiaoyama, Minato City, Tokyo</a></li>
+                                        </ul>
+                                        <div style="margin-top: 15px; padding: 10px; background: rgba(25, 25, 40, 0.5); border-radius: 8px; font-size: 0.9em;">
+                                            <strong>Details & Tips:</strong><br>
+                                            • This is a high-end Yakiniku restaurant; dress smart-casual.
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container is-collapsed" id="final-days">
+             <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;"><span class="section-icon">🌸</span><h2>Final Tokyo Days: Personal Extension</h2></div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content"></div>
+        </div>
+
+        <div class="section-container is-collapsed" id="expenses">
+             <div class="section-header collapsible-header">
+                <div style="display: flex; align-items: center; gap: 15px;"><span class="section-icon">💰</span><h2>Expenses</h2></div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="card">
+                    <table class="expenses-table">
+                        <thead><tr><th>Date</th><th>Description</th><th>Amount (YEN)</th><th>Amount (USD/GBP)</th></tr></thead>
+                        <tbody><tr><td>Fri 8th Aug</td><td>System fee to book</td><td>¥4,840</td><td>$32.86</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <div style="text-align: center; color: #b8b8d0; padding: 20px;">
+            <p>✨ Loading Tokyo dreams... <span class="sakura-icon">🌸</span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
